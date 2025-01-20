@@ -14,27 +14,31 @@ import auto.tr.bybit.common.Common;
 import auto.tr.bybit.common.DataCommon;
 import auto.tr.bybit.service.Data;
 import auto.tr.bybit.service.Indicators;
+import jakarta.annotation.PostConstruct;
 
 
 @SpringBootApplication
 public class AutoApplication {
-	@Autowired
-	private static Common common;
-	@Autowired
-	private static Data data;
-	
-	@Autowired
-	private static Indicators Indicators;
-	@Autowired
-	private static DataCommon dataCommon;
+    @Autowired
+    private Common common;
+
+    @Autowired
+    private Data data;
+
+    @Autowired
+    private Indicators indicators;
+
+    @Autowired
+    private DataCommon dataCommon;
 	
 	public static void main(String[] args) throws InvalidKeyException, NoSuchAlgorithmException {
 		SpringApplication.run(AutoApplication.class, args);
 		//atStart();
-		atTest();
+		//atTest();
 	}
-
-	private static void atTest() throws InvalidKeyException, NoSuchAlgorithmException {
+	
+	@PostConstruct
+	private void atTest() throws InvalidKeyException, NoSuchAlgorithmException {
 		String symbol = "BTC";
 		String inter = "15";
 		
@@ -71,11 +75,11 @@ public class AutoApplication {
 			}
 			System.out.println("---------------------");
 			System.out.println("i : " + i);
-			System.out.println(symbol + " / " + inter + " : sslUp : " + Indicators.sslUpperk(sslList, 60, high, low, close));
-			System.out.println(symbol + " / " + inter + " : sslLow : " + Indicators.sslLowerk(sslList, 60, high, low, close));
+			System.out.println(symbol + " / " + inter + " : sslUp : " + indicators.sslUpperk(sslList, 60, high, low, close));
+			System.out.println(symbol + " / " + inter + " : sslLow : " + indicators.sslLowerk(sslList, 60, high, low, close));
 			
-			trandUpList.add(Indicators.sslUpperk(sslList, 60, high, low, close));
-			trandLowList.add(Indicators.sslLowerk(sslList, 60, high, low, close));
+			trandUpList.add(indicators.sslUpperk(sslList, 60, high, low, close));
+			trandLowList.add(indicators.sslLowerk(sslList, 60, high, low, close));
 		}
 		System.out.println("---------------------");
 		Map<String, Object> trandMap = dataCommon.trand(trandUpList, trandLowList);
@@ -92,8 +96,8 @@ public class AutoApplication {
 			}
 			emaList.add(Double.parseDouble((String) item.get(4)));
 		}
-		System.out.println(symbol + " / " + inter + " : ema9 가격 : " + Indicators.ema(emaList, 9));
-		System.out.println(symbol + " / " + inter + " : ema25 가격 : " + Indicators.ema(emaList, 25));
+		System.out.println(symbol + " / " + inter + " : ema9 가격 : " + indicators.ema(emaList, 9));
+		System.out.println(symbol + " / " + inter + " : ema25 가격 : " + indicators.ema(emaList, 25));
 		
 		
 		//trandPirce ssl 최근가격으로 현가격이랑 차이가 많이 날 경우에는 포지션 X(급등 급락 일수도있어서)
@@ -112,12 +116,12 @@ public class AutoApplication {
 				}
 				sslList.add(Double.parseDouble((String) item.get(4)));
 			}
-			trandUpList.add(Indicators.sslUpperk(sslList, 60, high, low, close));
-			trandLowList.add(Indicators.sslUpperk(sslList, 60, high, low, close));
+			trandUpList.add(indicators.sslUpperk(sslList, 60, high, low, close));
+			trandLowList.add(indicators.sslUpperk(sslList, 60, high, low, close));
 		}
-}
+	}
 	
-	private static void atStart() throws InvalidKeyException, NoSuchAlgorithmException {
+	private void atStart() throws InvalidKeyException, NoSuchAlgorithmException {
 		//bybit 포지션 연동 해서 포지션 여부 확인 후 호출하기
 		boolean position = false;
 		while(true) {
@@ -135,8 +139,7 @@ public class AutoApplication {
 		}
 	}
 	
-	@SuppressWarnings("static-access")
-	private static void noPosition() throws InvalidKeyException, NoSuchAlgorithmException {
+	private void noPosition() throws InvalidKeyException, NoSuchAlgorithmException {
 		String symbol = "BTCUSDT";
 		//15분봉
 		Map<String, Object> data15Map = data.getKline(symbol, "15", 100);
@@ -168,8 +171,8 @@ public class AutoApplication {
 				}
 				sslList.add(Double.parseDouble((String) item.get(4)));
 			}
-			trandUpList.add(Indicators.sslUpperk(sslList, 60, high, low, close));
-			trandLowList.add(Indicators.sslLowerk(sslList, 60, high, low, close));
+			trandUpList.add(indicators.sslUpperk(sslList, 60, high, low, close));
+			trandLowList.add(indicators.sslLowerk(sslList, 60, high, low, close));
 		}
 		Map<String, Object> trandMap = dataCommon.trand(trandUpList, trandLowList);
 		String trandStr = (String) trandMap.get("trandStr");
@@ -214,8 +217,8 @@ public class AutoApplication {
 				}
 				sslList.add(Double.parseDouble((String) item.get(4)));
 			}
-			trandUpList.add(Indicators.sslUpperk(sslList, 60, high, low, close));
-			trandLowList.add(Indicators.sslLowerk(sslList, 60, high, low, close));
+			trandUpList.add(indicators.sslUpperk(sslList, 60, high, low, close));
+			trandLowList.add(indicators.sslLowerk(sslList, 60, high, low, close));
 		}
 		
 		//현가격이랑 몇퍼센트 차이가 나는지 구해야함
@@ -228,7 +231,7 @@ public class AutoApplication {
 		}
 	}
 	
-	private static void notNoPosition() {
+	private void notNoPosition() {
 		//1분봉 ssl 추세 바뀔때 포종?
 		
 	}
