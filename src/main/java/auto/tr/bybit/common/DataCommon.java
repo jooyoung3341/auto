@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class DataCommon {
 	
 	public Map<String, Object> trand(List<Double> trandUpList, List<Double> trandLowList) {

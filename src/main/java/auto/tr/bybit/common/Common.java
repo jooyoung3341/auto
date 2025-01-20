@@ -3,9 +3,10 @@ package auto.tr.bybit.common;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class Common {
 
 	@SuppressWarnings("unchecked")

@@ -38,7 +38,7 @@ public class AutoApplication {
 	}
 	
 	@PostConstruct
-	private void atTest() throws InvalidKeyException, NoSuchAlgorithmException {
+	public void atTest() throws InvalidKeyException, NoSuchAlgorithmException {
 		String symbol = "BTC";
 		String inter = "15";
 		
@@ -56,20 +56,32 @@ public class AutoApplication {
 		Map<String, Object> priceMap = data.getMarkKline("BTCUSDT", "15");
 		List<List<Object>> priceList = common.resultList(priceMap);
 		
+		//0이 진행중 캔들 1이 이전캔들  모든곳이 그런듯 0이 진행중 1부터 이전캔들 
 		for(List<Object> item : priceList) {
+			System.out.println("ii : " + item);
 			high = Double.parseDouble((String) item.get(2));
 			low = Double.parseDouble((String) item.get(3));
 			close = Double.parseDouble((String) item.get(4));
+			break;
 		}
+		List<Double> testDataArr = new ArrayList<>();
+		for(List<Object> item : data15List) {
+
+			testDataArr.add(Double.parseDouble((String) item.get(4)));
+		}
+		System.out.println("testDataArr : " + testDataArr);
+		//testDataArr : [102999.9, 102713.9, 103589.5, 103397.1, 103093.8, 102578.8, 102599.9, 103374.8, 103714.7, 103844.5, 103649.6, 103864.9, 103960.4, 103746.0, 103693.3, 103287.6, 103235.1, 103714.3, 103928.8, 103984.4, 103750.3, 103953.2, 102978.4, 100796.8, 104185.2, 104245.9, 106703.9, 106532.9, 105637.1, 104564.6, 105000.0, 106500.0, 107061.6, 107444.6, 107926.0, 107785.8, 107535.3, 107715.2, 108005.9, 107711.1, 107373.8, 106997.8, 106947.6, 106505.1, 106664.3, 107409.8, 108271.9, 108180.2, 108451.1, 108136.0, 108000.1, 108487.7, 108534.1, 108118.2, 108178.5, 108020.7, 108276.9, 108783.9, 108348.4, 108256.1, 108052.6, 107892.0, 107172.9, 108015.4, 108781.2, 109059.4, 107542.7, 104714.7, 102640.7, 102495.8, 102333.3, 102599.9, 102458.0, 102451.9, 102200.1, 102298.8, 101741.0, 101778.3, 101880.0, 101569.2, 101647.4, 101767.5, 101911.0, 101628.9, 101687.5, 100969.9, 100671.6, 100044.7, 100266.3, 100190.9, 99757.6, 100738.2, 101067.8, 101398.5, 101310.7, 101203.0, 100517.3, 101264.1, 103400.0, 103330.9]
+
 		System.out.println(symbol + " / " + inter + " : high : " + high + "/ low : " + low + "/ close : " + close);
 		//ssl n개데이터를 뽑아서 우상향인지 우하향인지  파악해서 추세 확인
 		for(int i = 1; i <= 7; i++) {
 			int j = 0;
 			List<Double> sslList = new ArrayList<>();
 			for(List<Object> item : data15List) {
+				System.out.println("data 15 : " + item);
 				if(j < i) {
 					j += 1;
-					break;
+					continue;
 				}
 				sslList.add(Double.parseDouble((String) item.get(4)));
 			}
@@ -92,7 +104,7 @@ public class AutoApplication {
 			//현재 진행중인 캔들은 제외
 			if(count == 0) {
 				count = 1;
-				break;
+				continue;
 			}
 			emaList.add(Double.parseDouble((String) item.get(4)));
 		}

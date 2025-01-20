@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import auto.tr.bybit.common.BybitCommon;
 
-@Service
+@Component
 public class Data {
 	@Autowired
 	BybitCommon common;
