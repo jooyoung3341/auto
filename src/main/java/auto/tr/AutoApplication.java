@@ -3,6 +3,7 @@ package auto.tr;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,8 +37,71 @@ public class AutoApplication {
 		//atStart();
 		//atTest();
 	}
-	
 	@PostConstruct
+	public void test() throws InvalidKeyException, NoSuchAlgorithmException {
+		//
+		String testDataArr = "102999.9,102713.9,103589.5,103397.1,103093.8,102578.8,102599.9,103374.8,103714.7,103844.5,103649.6,103864.9,103960.4,103746.0,103693.3,103287.6,103235.1,103714.3,103928.8,103984.4,103750.3,103953.2,102978.4,100796.8,104185.2,104245.9,106703.9,106532.9,105637.1,104564.6,105000.0,106500.0,107061.6,107444.6,107926.0,107785.8,107535.3,107715.2,108005.9,107711.1,107373.8,106997.8,106947.6,106505.1,106664.3,107409.8,108271.9,108180.2,108451.1,108136.0,108000.1,108487.7,108534.1,108118.2,108178.5,108020.7,108276.9,108783.9,108348.4,108256.1,108052.6,107892.0,107172.9,108015.4,108781.2,109059.4,107542.7,104714.7,102640.7,102495.8,102333.3,102599.9,102458.0,102451.9,102200.1,102298.8,101741.0,101778.3,101880.0,101569.2,101647.4,101767.5,101911.0,101628.9,101687.5,100969.9,100671.6,100044.7,100266.3,100190.9,99757.6,100738.2,101067.8,101398.5,101310.7,101203.0,100517.3,101264.1,103400.0,103330.9";
+		String testhDataArr = "103001.9,102913.9,103989.5,103897.1,103793.8,103578.8,102899.9,103874.8,104714.7,104844.5,104649.6,104864.9,104960.4,104746.0,104693.3,104287.6,104235.1,104714.3,104928.8,104984.4,104750.3,104953.2,103978.4,102796.8,105185.2,105245.9,106803.9,106932.9,106637.1,105564.6,105010.0,106700.0,107161.6,108444.6,108926.0,108785.8,108535.3,108715.2,108105.9,107911.1,107973.8,107997.8,107947.6,107505.1,107664.3,107909.8,108571.9,108680.2,108751.1,108836.0,108200.1,108987.7,108734.1,108618.2,108678.5,108420.7,108576.9,108983.9,108848.4,108556.1,108452.6,108892.0,107572.9,108315.4,108981.2,109159.4,108542.7,106714.7,104640.7,104495.8,103333.3,103599.9,103458.0,103451.9,104200.1,103298.8,103741.0,102778.3,102880.0,102569.2,102647.4,102767.5,103911.0,102628.9,103687.5,101969.9,101671.6,101044.7,101266.3,101190.9,99857.6,101738.2,102067.8,102398.5,102310.7,102203.0,101517.3,102264.1,104400.0,104330.9";
+		String testlDataArr = "101999.9,101713.9,102589.5,102397.1,102093.8,101578.8,101599.9,102374.8,102714.7,102844.5,102649.6,102864.9,102960.4,102746.0,102693.3,102287.6,102235.1,102714.3,102928.8,102984.4,102750.3,102953.2,101978.4,100196.8,103185.2,103245.9,105703.9,105532.9,104637.1,103564.6,104000.0,105500.0,106061.6,106444.6,106926.0,106785.8,106535.3,106715.2,107005.9,106711.1,106373.8,105997.8,105947.6,105505.1,105664.3,106409.8,107271.9,107180.2,107451.1,107136.0,107000.1,107487.7,107534.1,107118.2,107178.5,107020.7,107276.9,107783.9,107348.4,107256.1,107052.6,106892.0,106172.9,106015.4,107781.2,108059.4,106542.7,103714.7,101640.7,101495.8,101333.3,101599.9,101458.0,101451.9,101200.1,101298.8,100741.0,100778.3,100880.0,100569.2,100647.4,100767.5,100911.0,100628.9,100687.5,100469.9,100171.6,100004.7,100066.3,100090.9,99157.6,100038.2,100067.8,100398.5,100310.7,100203.0,100017.3,100264.1,100400.0,100330.9";
+						
+		String str [] = testDataArr.split(",");
+		String str1 [] = testhDataArr.split(",");
+		String str2 [] = testlDataArr.split(",");
+		double h = 103589.5;
+		double l = 102713.9;
+		double c = 102999.9;
+		List<Double> list = new ArrayList<>();
+		List<Double> list1 = new ArrayList<>();
+		List<Double> list2 = new ArrayList<>();
+		
+		
+		for (int i = 0; i < str.length; i++) {
+			list.add(Double.parseDouble(str[i]));
+			list1.add(Double.parseDouble(str1[i]));
+			list2.add(Double.parseDouble(str2[i]));
+			
+		}
+		 //: sslUp : 101329.7916698587
+		// : sslUp0.2 : 100112.32050707239
+
+		
+		System.out.println(" : sslUp : " + indicators.sslUpperk(list,list1,list2,60));
+		System.out.println(" : emp9 : " + indicators.ema(list, 9));
+		System.out.println(" : emp25 : " + indicators.ema(list,25));
+		System.out.println(" : emp99 : " + indicators.ema(list,99));
+
+		List<Double> tList1 = new ArrayList<>();
+		List<Double> tList2 = new ArrayList<>();
+		
+		List<Double> trandUpList = new ArrayList<>();
+		List<Double> trandLowList = new ArrayList<>();
+		System.out.println("str :: " + str.length);
+		for(int i = 1; i <= 7; i++) {
+			int j = 0;
+			List<Double> sslList = new ArrayList<>();
+			List<Double> sslList1 = new ArrayList<>();
+			List<Double> sslList2 = new ArrayList<>();
+			for (int k = 0; k < str.length; k++) {
+				if(j < i) {
+					j += 1;
+					continue;
+				}
+				sslList.add(list.get(k));
+				sslList1.add(list1.get(k));
+				sslList2.add(list2.get(k));
+				
+			}
+			
+			trandUpList.add(indicators.sslUpperk(sslList,sslList1,sslList2, 60));
+			trandLowList.add(indicators.sslLowerk(sslList,sslList1,sslList2, 60));
+		}
+		
+		Map<String, Object> tMap = dataCommon.trand(trandUpList, trandLowList);
+		System.out.println(tMap);
+		
+		//System.out.println(" : sslLow : " + indicators.sslLowerk("HMA", d, 60, h, l, c));
+	}
+	/*@PostConstruct
 	public void atTest() throws InvalidKeyException, NoSuchAlgorithmException {
 		String symbol = "BTC";
 		String inter = "15";
@@ -246,5 +310,5 @@ public class AutoApplication {
 	private void notNoPosition() {
 		//1분봉 ssl 추세 바뀔때 포종?
 		
-	}
+	}*/
 }

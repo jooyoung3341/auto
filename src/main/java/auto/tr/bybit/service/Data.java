@@ -16,6 +16,7 @@ public class Data {
 	@Autowired
 	BybitCommon common;
 	
+	//n분봉 캔들데이터 가져오기
 	public Map<String, Object> getKline(String symbol, String interval, int limit) throws InvalidKeyException, NoSuchAlgorithmException{
 		Map<String, Object> map = new HashMap<>();
 		map.put("category", "linear");

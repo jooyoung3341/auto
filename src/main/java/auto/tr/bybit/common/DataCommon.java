@@ -14,12 +14,13 @@ public class DataCommon {
 		Map<String, Object> map = new HashMap<>();
 		String trandStr = "";
 		double trandPirce = 0.0;
-		for (int i = 0; i < trandUpList.size(); i++) {
-			double dataUp1 = trandUpList.get(trandUpList.size()-i);
-			double dataUp2 = trandUpList.get(trandUpList.size()-(i+1));
+		int size = trandUpList.size()-1;
+		for (int i = trandUpList.size(); i < 1; i++) {
+			double dataUp1 = trandUpList.get(i);
+			double dataUp2 = trandUpList.get(i-1);
 			
-			double dataLow1 = trandLowList.get(trandLowList.size()-i);
-			double dataLow2 = trandLowList.get(trandLowList.size()-(i+1));
+			double dataLow1 = trandLowList.get(i);
+			double dataLow2 = trandLowList.get(i-1);
 			
 			if((dataUp1+dataLow1) > (dataUp2+dataLow2)) {
 				//상방

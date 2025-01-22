@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class Indicators {
 
 	 // Exponential Moving Average (EMA)
     public static double ema(List<Double> data, int period) {
-
-        double alpha = 2.0 / (period + 1.0);
+        List<Double> emaList = new ArrayList<>();
+    	for (int i = 0; i < period; i++) {
+    		emaList.add(data.get(i));
+        }
+    	double alpha = 2.0 / (period + 1.0);
         double emaValue = data.get(0); // 초기값 설정
         for (int i = 1; i < data.size(); i++) {
-            emaValue = alpha * data.get(i) + (1 - alpha) * emaValue;
+        	emaValue = alpha * data.get(i) + (1 - alpha) * emaValue;
         }
         return emaValue;
     }
@@ -23,22 +25,26 @@ public class Indicators {
     // Weighted Moving Average (WMA)
     public static double wma(List<Double> data, int period) {
     	 int size = data.size();
+    	 
          double weightedSum = 0.0;
-         System.out.println("wma data : " + data);
-         System.out.println("wma period : " + period);
-         
-         for (int i = 0; i < period; i++) {
-             weightedSum += data.get(size - period + i) * (i + 1);
+         if(data.size() <= 1) {
+        	 for (int i = 0; i < period; i++) {
+        		 weightedSum += data.get(0)*(i+1);
+			}
+        	 
+         }else {
+        	 for (int i = 0; i < period; i++) {
+                 weightedSum += data.get(size - period + i) * (i + 1);
+             }
          }
+         
          double sumOfWeights = (period * (period + 1)) / 2.0;
+         
          return weightedSum / sumOfWeights;
     }
 
     // Hull Moving Average (HMA)
     public static double hma(List<Double> data, int period) {
-    	System.out.println("data :: " + data);
-    	System.out.println("period :: " + period);
-    	
 
         List<Double> dataArrHma = new ArrayList<>();
         for (int i = 0; i < period; i++) {
@@ -60,29 +66,35 @@ public class Indicators {
     }
 
     // SSL Upper Band
-    public static double sslUpperk(List<Double> data, int period, double high, double low, double close) {
-    	System.out.println("Zzz"+ period);
-        double keltma = hma(data, period);
-        double range = trueRange(high, low, close);
+    public static double sslUpperk(List<Double> close, List<Double> high, List<Double> low, int period) {
+        double keltma = hma(close, period);
 
         List<Double> rangeArr = new ArrayList<>();
-        rangeArr.add(range);
-
+        for (int i = 0; i < period; i++) {
+			double range = trueRange(high.get(i), low.get(i), close.get(i));
+			rangeArr.add(range);
+			
+        }
         double rangema = ema(rangeArr, period);
-        return keltma + rangema;
+        return keltma + rangema * 0.2;
     }
 
     // SSL Lower Band
-    public static double sslLowerk(List<Double> data, int period, double high, double low, double close) {
-        double keltma = hma(data, period);
-        double range = trueRange(high, low, close);
-
+    public static double sslLowerk(List<Double> close, List<Double> high, List<Double> low, int period) {
+        double keltma = hma(close, period);
         List<Double> rangeArr = new ArrayList<>();
-        rangeArr.add(range);
+        for (int i = 0; i < period; i++) {
+ 			double range = trueRange(high.get(i), low.get(i), close.get(i));
+ 			rangeArr.add(range);
+ 			
+         }
 
         double rangema = ema(rangeArr, period);
-        return keltma - rangema;
+
+        
+        return keltma - rangema * 0.2;
     }
+    
     /*
      * qqe모드
      //@version=6
